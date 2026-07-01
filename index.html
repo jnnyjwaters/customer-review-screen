@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Remitly — Real Customer Reviews</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root {
+    --indigo: #2C415A;
+    --jicama: #FBF8F2;
+    --agave: #6FA0AF;
+    --turmeric: #FFBC69;
+    --text-dark: #1A1A1A;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    width: 100%; height: 100%;
+    background: var(--indigo);
+    font-family: 'Greycliff CF', 'Proxima Nova', 'Poppins', Arial, sans-serif;
+    overflow: hidden;
+  }
+  .wrap {
+    display: flex; flex-direction: column;
+    width: 100vw; height: 100vh;
+    padding: 4vh 6vw;
+  }
+  .header {
+    display: flex; justify-content: space-between; align-items: baseline;
+    color: var(--jicama);
+    margin-bottom: 3vh;
+  }
+  .header h1 {
+    font-family: 'Masqualero', 'Proxima Nova', Arial, sans-serif;
+    font-weight: 700;
+    font-size: 2.6vw;
+    letter-spacing: 0.02em;
+  }
+  .header .meta {
+    font-size: 1.1vw;
+    opacity: 0.75;
+  }
+  .stage {
+    flex: 1;
+    position: relative;
+  }
+  .card {
+    position: absolute; inset: 0;
+    background: var(--jicama);
+    border-radius: 24px;
+    border-left: 12px solid var(--agave);
+    padding: 5vh 5vw;
+    display: flex; flex-direction: column; justify-content: center;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .card.active {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .stars {
+    color: var(--turmeric);
+    font-size: 2.6vw;
+    letter-spacing: 0.05em;
+    line-height: 1;
+  }
+  .quote-mark {
+    font-size: 6vw;
+    color: var(--agave);
+    line-height: 1;
+    font-family: Georgia, serif;
+  }
+  .quote-text {
+    font-size: 3.1vw;
+    line-height: 1.35;
+    color: var(--text-dark);
+    font-weight: 500;
+    margin: 1vh 0 4vh 0;
+  }
+  .attribution {
+    display: flex; align-items: center; gap: 1.2vw;
+  }
+  .badge {
+    background: var(--indigo);
+    color: var(--jicama);
+    font-size: 1.15vw;
+    font-weight: 700;
+    padding: 0.6vh 1.4vw;
+    border-radius: 999px;
+    letter-spacing: 0.03em;
+  }
+  .who {
+    font-size: 1.4vw;
+    color: var(--text-dark);
+    opacity: 0.75;
+  }
+  .footer {
+    display: flex; justify-content: space-between; align-items: center;
+    color: var(--jicama);
+    opacity: 0.6;
+    margin-top: 3vh;
+    font-size: 1vw;
+  }
+  .dots {
+    display: flex; gap: 0.5vw;
+    flex-wrap: wrap;
+  }
+  .dot {
+    width: 0.6vw; height: 0.6vw; border-radius: 50%;
+    background: rgba(251,248,242,0.3);
+    transition: background 0.3s ease;
+  }
+  .dot.active { background: var(--agave); }
+  .live-dot {
+    display: inline-block;
+    width: 0.7vw; height: 0.7vw;
+    border-radius: 50%;
+    background: #6FCF97;
+    margin-right: 0.6vw;
+    animation: pulse 2s infinite ease-in-out;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="header">
+      <h1>What customers are saying right now</h1>
+      <div class="meta">Real App Store &amp; Google Play reviews &middot; unedited &middot; refreshed 2026-07-01 22:03</div>
+    </div>
+    <div class="stage" id="stage"></div>
+    <div class="footer">
+      <div><span class="live-dot"></span>Remitly &middot; live customer voice, not marketing copy</div>
+      <div class="dots" id="dots"></div>
+    </div>
+  </div>
+
+<script>
+  const REVIEWS = [{"source": "App Store", "name": "Pariente5", "text": "Son muy c\u00f3modos y r\u00e1pidos", "date": "2026-06-30", "rating": 5}, {"source": "Google Play", "name": "Mina Lawrence", "text": "fast and easy. No complications", "date": "2026-07-01", "rating": null}, {"source": "App Store", "name": "Duk6sms", "text": "Great price, easy to send.", "date": "2026-06-30", "rating": 5}, {"source": "Google Play", "name": "Damaris Lara", "text": "Easy to understand, and the fastest way to transfer $ to a family member in need!!", "date": "2026-07-01", "rating": null}, {"source": "App Store", "name": "Sun yogurt", "text": "I can no longer give Remitly five stars since the addition of this $3 fee per transaction.", "date": "2026-06-30", "rating": 4}, {"source": "Google Play", "name": "Juanda86", "text": "Es la mejor app que existe actualmente para enviar dinero r\u00e1pido, yo lo uso con Bre-b y funciona s\u00faper bien, llega en minutos y solo cobran 1\u20ac de comisi\u00f3n. El tipo de cambio tambi\u00e9n est\u00e1 muy bien.", "date": "2026-07-01", "rating": null}, {"source": "App Store", "name": "Rsoido", "text": "Entrega es r\u00e1pida", "date": "2026-06-30", "rating": 5}, {"source": "Google Play", "name": "Jose Torres", "text": "me gust\u00f3 f\u00e1cil y r\u00e1pido", "date": "2026-07-01", "rating": null}, {"source": "App Store", "name": "Joan Hunt", "text": "Very easy to sent some money to my family Overseas \ud83d\ude0a", "date": "2026-06-30", "rating": 5}, {"source": "Google Play", "name": "Adriana Acosta Ortiz", "text": "excelente aplicaci\u00f3n para enviar dinero", "date": "2026-07-01", "rating": null}, {"source": "App Store", "name": "Mujer m\u00e1gica", "text": "Me gusta esta aplicaci\u00f3n por la garant\u00eda y confiabilidad. Y rapidez", "date": "2026-06-30", "rating": 5}, {"source": "Google Play", "name": "Jose Bomb\u00f3n", "text": "Great way to send my money to other countries", "date": "2026-07-01", "rating": null}, {"source": "App Store", "name": "Black ballin", "text": "Very convenient and easy to use", "date": "2026-06-30", "rating": 5}, {"source": "Google Play", "name": "JUAN", "text": "uma maravillosa app, muy facil de usarse, super recomendable", "date": "2026-07-01", "rating": null}, {"source": "App Store", "name": "Flaco\ud83d\ude4f", "text": "Amo puedo enviar de\nManera r\u00e1pida y segura \u2665\ufe0f", "date": "2026-06-30", "rating": 5}, {"source": "Google Play", "name": "Sushilkumar Jadhav", "text": "Very good and reliable transfer service.", "date": "2026-07-01", "rating": null}, {"source": "App Store", "name": "Miss Luci 58", "text": "At\u00e9 agora dando certo obrigada", "date": "2026-06-30", "rating": 5}, {"source": "Google Play", "name": "Arianna Rodriguez", "text": "Good and fast Service. Not expensive. I love it", "date": "2026-07-01", "rating": null}, {"source": "App Store", "name": "Sussycolon", "text": "Muy seguro y r\u00e1pido", "date": "2026-06-30", "rating": 5}, {"source": "Google Play", "name": "Natasha Guerrero", "text": "me encanta la rapidez que hacen el envio y sin complicaciones, los recomiendo", "date": "2026-07-01", "rating": null}, {"source": "App Store", "name": "@byuyi", "text": "Is the best app of the world", "date": "2026-06-30", "rating": 5}, {"source": "Google Play", "name": "imad lamrabte", "text": "efficace en toute confiance", "date": "2026-07-01", "rating": null}, {"source": "App Store", "name": "SRa saily", "text": "Me encanta el app, sin salir de casa y el dinero llega r\u00e1pido y seguro \ud83d\udc4c", "date": "2026-06-29", "rating": 5}, {"source": "Google Play", "name": "Odalis Carolina Tello Ayala", "text": "est\u00e1 aplicaci\u00f3n es muy buena me ayudado \ud83d\ude0a mucho se las recomiendo es para varios pa\u00edses r\u00e1pido y seguro enviar tu dinero", "date": "2026-07-01", "rating": null}, {"source": "App Store", "name": "SACEVAL", "text": "Excelente servicio y muy r\u00e1pido", "date": "2026-06-29", "rating": 5}, {"source": "Google Play", "name": "Biena26 Montesa03", "text": "thank u so much so easy and quickly send to my family \ud83e\udd70", "date": "2026-07-01", "rating": null}, {"source": "App Store", "name": "Peepalove 1\u2764\ufe0f\ud83c\udfdd\ud83c\udf48", "text": "I enjoy this service and have used it to help friends and family in various countries with various banks.", "date": "2026-06-29", "rating": 5}, {"source": "Google Play", "name": "Aisel Omerbashi", "text": "Awesome app. It does perfectly what it says", "date": "2026-07-01", "rating": null}, {"source": "App Store", "name": "Retmy lo mejor", "text": "Muy buena aplicaci\u00f3n que te saca de apuro", "date": "2026-06-29", "rating": 5}, {"source": "Google Play", "name": "Antonio Caballero", "text": "lo recomiendo %100 confiable muchas gracias Remitly", "date": "2026-07-01", "rating": null}];
+  const stage = document.getElementById('stage');
+  const dotsWrap = document.getElementById('dots');
+
+  REVIEWS.forEach((r, i) => {
+    const card = document.createElement('div');
+    card.className = 'card' + (i === 0 ? ' active' : '');
+    const topLine = r.rating
+      ? `<div class="stars">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</div>`
+      : `<div class="quote-mark">&ldquo;</div>`;
+    card.innerHTML = `
+      ${topLine}
+      <div class="quote-text">${r.text.replace(/</g,'&lt;')}</div>
+      <div class="attribution">
+        <span class="badge">${r.source}</span>
+        <span class="who">${r.name} &middot; ${r.date}</span>
+      </div>`;
+    stage.appendChild(card);
+
+    const dot = document.createElement('div');
+    dot.className = 'dot' + (i === 0 ? ' active' : '');
+    dotsWrap.appendChild(dot);
+  });
+
+  let idx = 0;
+  const cards = stage.querySelectorAll('.card');
+  const dots = dotsWrap.querySelectorAll('.dot');
+
+  function next() {
+    cards[idx].classList.remove('active');
+    dots[idx].classList.remove('active');
+    idx = (idx + 1) % cards.length;
+    cards[idx].classList.add('active');
+    dots[idx].classList.add('active');
+  }
+
+  setInterval(next, 7000);
+
+  // A refresh job regenerates this file periodically. Reload on the same
+  // cadence so the on-screen browser picks up fresh reviews on its own.
+  setTimeout(() => location.reload(), 30 * 60 * 1000);
+</script>
+</body>
+</html>
