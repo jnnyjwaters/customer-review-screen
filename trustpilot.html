@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Remitly — Trustpilot Reviews</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root {
+    --indigo: #2C415A; --jicama: #FBF8F2; --agave: #6FA0AF; --turmeric: #FFBC69; --text-dark: #1A1A1A;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 100%; height: 100%; background: var(--indigo);
+    font-family: 'Greycliff CF', 'Proxima Nova', 'Poppins', Arial, sans-serif; overflow: hidden; }
+  .wrap { display: flex; flex-direction: column; width: 100vw; height: 100vh; padding: 4vh 6vw; }
+  .header { display: flex; justify-content: space-between; align-items: baseline; color: var(--jicama); margin-bottom: 3vh; }
+  .header h1 { font-family: 'Masqualero', 'Proxima Nova', Arial, sans-serif; font-weight: 700; font-size: 2.6vw; letter-spacing: 0.02em; }
+  .header .meta { font-size: 1.1vw; opacity: 0.75; }
+  .stage { flex: 1; position: relative; }
+  .card { position: absolute; inset: 0; background: var(--jicama); border-radius: 24px;
+    border-left: 12px solid var(--agave); padding: 5vh 5vw; display: flex; flex-direction: column;
+    justify-content: center; opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .card.active { opacity: 1; transform: translateY(0); }
+  .stars { color: var(--turmeric); font-size: 2.6vw; letter-spacing: 0.05em; line-height: 1; }
+  .quote-text { font-size: 3.1vw; line-height: 1.35; color: var(--text-dark); font-weight: 500; margin: 1vh 0 4vh 0; }
+  .attribution { display: flex; align-items: center; gap: 1.2vw; }
+  .badge { background: var(--indigo); color: var(--jicama); font-size: 1.15vw; font-weight: 700; padding: 0.6vh 1.4vw; border-radius: 999px; letter-spacing: 0.03em; }
+  .who { font-size: 1.4vw; color: var(--text-dark); opacity: 0.75; }
+  .footer { display: flex; justify-content: space-between; align-items: center; color: var(--jicama); opacity: 0.6; margin-top: 3vh; font-size: 1vw; }
+  .dots { display: flex; gap: 0.5vw; flex-wrap: wrap; }
+  .dot { width: 0.6vw; height: 0.6vw; border-radius: 50%; background: rgba(251,248,242,0.3); transition: background 0.3s ease; }
+  .dot.active { background: var(--agave); }
+  .live-dot { display: inline-block; width: 0.7vw; height: 0.7vw; border-radius: 50%; background: #6FCF97; margin-right: 0.6vw; animation: pulse 2s infinite ease-in-out; }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="header">
+      <h1>What customers are saying on Trustpilot</h1>
+      <div class="meta">Real Trustpilot reviews &middot; unedited &middot; refreshed 2026-07-06 22:42</div>
+    </div>
+    <div class="stage" id="stage"></div>
+    <div class="footer">
+      <div><span class="live-dot"></span>Remitly &middot; live customer voice, not marketing copy</div>
+      <div class="dots" id="dots"></div>
+    </div>
+  </div>
+
+<script>
+  const REVIEWS = [{"source": "Trustpilot", "id": "6a4c1158279f1c438a990599", "name": "customer", "text": "Fast and easy transactions", "date": "2026-07-06", "rating": 5}, {"source": "Trustpilot", "id": "6a4c0fc7248ee02e3184dcd2", "name": "Dear Mr Choudhury", "text": "Quick delivery's & friendly staff in the customer service team. I would have given 5 stars if the exchange rates were higher than Ria!", "date": "2026-07-06", "rating": 4}, {"source": "Trustpilot", "id": "6a4c0c55e906c6c71f92a9a8", "name": "customer", "text": "Not reliable, bad customer service. Bad politics.", "date": "2026-07-06", "rating": 1}, {"source": "Trustpilot", "id": "6a4c0a68c642402ee61c4d6f", "name": "cliente", "text": "Me en encanta esta aplicaci\u00f3n por r\u00e1pido y seguro y f\u00e1cil de mandar tu dinero a Mexico \u263a\ufe0f", "date": "2026-07-06", "rating": 5}, {"source": "Trustpilot", "id": "6a4c0a5013642e2d67d3bcc4", "name": "customer Naveed Khan", "text": "It's very easy to send money and also too fast so I'm so happy from remitly and the remitly team because they work with responsibility to \ud83d\ude18 i appreciate them", "date": "2026-07-06", "rating": 5}, {"source": "Trustpilot", "id": "6a4c083de4701f8de1af6218", "name": "customer", "text": "Aadbey Uliidatay Asbuucaan Awal Hore Way Fiicneed Waxaa Hada Iga maqan Labo Lacag", "date": "2026-07-06", "rating": 5}, {"source": "Trustpilot", "id": "6a4c0598369fb0eb509cbe77", "name": "customer", "text": "Very quick and easy transfer. Low transfer costs.", "date": "2026-07-06", "rating": 5}, {"source": "Trustpilot", "id": "6a4c0573304d6f95c4f5cfdb", "name": "customer", "text": "Convenient and the transfer was safe and fast.", "date": "2026-07-06", "rating": 5}, {"source": "Trustpilot", "id": "6a4c04b04ab4f9be7d6248ee", "name": "Lydia", "text": "The money arrived fast and secured", "date": "2026-07-06", "rating": 5}, {"source": "Trustpilot", "id": "6a4c03c424ddec14e465e37e", "name": "Nichole", "text": "The platform is very easy to use and hassle free.", "date": "2026-07-06", "rating": 5}, {"source": "Trustpilot", "id": "6a4c010d206dc996668f1547", "name": "Jacqueline lobo", "text": "Me gusta usar remitly porque es una forma de segura de enviar dinero y su cambio tambien....", "date": "2026-07-06", "rating": 5}, {"source": "Trustpilot", "id": "6a4bfed9da8e37a261146843", "name": "cliente", "text": "Easy, Quick and trustable.", "date": "2026-07-06", "rating": 5}, {"source": "Trustpilot", "id": "6a4beff4e08c2778d72deef6", "name": "Rukman Khan", "text": "Remitly team is very nice customer service also very fast solve anyone problem I'm impressed to used Remitly app \ud83e\udd17", "date": "2026-07-06", "rating": 5}, {"source": "Trustpilot", "id": "6a4beca5111fd1f3f40c8186", "name": "Paulina Junca Maldonado", "text": "Remitly is the best service for send money to my family, and also is cheap and so fast!", "date": "2026-07-06", "rating": 5}, {"source": "Trustpilot", "id": "6a4bea59e5fb96a7be05bf11", "name": "Simiso Sibanda", "text": "Swift fast and reliable.", "date": "2026-07-06", "rating": 5}, {"source": "Trustpilot", "id": "6a4bea50f4cefaa23f5d1b9f", "name": "customer", "text": "I misspelled the last name of the receiver. Why they hold the money for 10days to return . That s not Ok", "date": "2026-07-06", "rating": 2}, {"source": "Trustpilot", "id": "6a4be7fde35b00e679816760", "name": "Ismail mukhtar", "text": "Usefull, and it is very helpful for connecting to family", "date": "2026-07-06", "rating": 5}, {"source": "Trustpilot", "id": "6a4bda09e4b90fe41dd6ad9a", "name": "John Andrew Richardson", "text": "All my transactions with you have been excellent.", "date": "2026-07-06", "rating": 5}, {"source": "Trustpilot", "id": "6a4bd88777b29df020e9208b", "name": "Tariq", "text": "So good application fast safety i will alwes transfer with them the transfer arrived in minutes thank you", "date": "2026-07-06", "rating": 5}, {"source": "Trustpilot", "id": "6a4bd7d8870cb4d602b9bdee", "name": "cliente", "text": "Lo que mas me gusta de esta compania es que las veces que he tenido inconvenientes para enviar la plata los empleados con una llamada le ayudan y siempre resuelven el problema. Y tambien que es un medio muy seguro para enviar la plata", "date": "2026-07-06", "rating": 5}, {"source": "Trustpilot", "id": "6a4bd3c51b82ed7a0670d169", "name": "cliente Osmar P\u00e1ez", "text": "Buenas tardes para m\u00ed personalmente son espectaculares desde el momento que los contact\u00e9 todo a estado en perfecto con mi tarjeta de cr\u00e9dito me lleg\u00f3 al momento la f\u00edsica me lleg\u00f3 a los 5 d\u00edas", "date": "2026-07-06", "rating": 5}, {"source": "Trustpilot", "id": "6a4bc83b441e3c257e6d113e", "name": "cliente", "text": "Que de una vez cae la trasferencia", "date": "2026-07-06", "rating": 5}, {"source": "Trustpilot", "id": "6a4bbb37e4586c8375e06e8d", "name": "cliente", "text": "Todo funciona de maravilla con las transferencia", "date": "2026-07-06", "rating": 5}, {"source": "Trustpilot", "id": "6a4bb7362dad4cb8ce20c2e1", "name": "Gatineau guy", "text": "Easiest international transfer using interac request. Exchange rate is great. Step by step notification of where we are in the transfer process is excellent.", "date": "2026-07-06", "rating": 5}, {"source": "Trustpilot", "id": "6a4bb40e7cdc25a87a1cf71c", "name": "Messeret Tewolde", "text": "Love it but it takes a week to send money", "date": "2026-07-06", "rating": 3}, {"source": "Trustpilot", "id": "6a4bb1fd5c4fe8b1e9f777a9", "name": "cliente", "text": "El servicio es bueno, la atenci\u00f3n tambi\u00e9n, excelente", "date": "2026-07-06", "rating": 5}, {"source": "Trustpilot", "id": "6a4ba9260c0778a4a6a365a3", "name": "cliente", "text": "Por qu\u00e9 pagan muy barato \ud83e\udd26\u200d\u2642\ufe0fy no rinde en cambio en r\u00eda pagan un d\u00f3lar m\u00e1s", "date": "2026-07-06", "rating": 2}, {"source": "Trustpilot", "id": "6a4ba80951b984f19f208bbd", "name": "K s, Dhanjal", "text": "Quick good service. Funds transferred very easily and on time.", "date": "2026-07-06", "rating": 5}, {"source": "Trustpilot", "id": "6a4b9c6eb60d40f88df0ec63", "name": "Shayanzz", "text": "This app makes sending money home incredibly easy. The transfers are almost instant, and the interface is super user-friendly. Highly recommend", "date": "2026-07-06", "rating": 5}, {"source": "Trustpilot", "id": "6a4b9c1f6497483d83da7a39", "name": "Ruth Simiyu", "text": "Transfer delay that has taken weeks and it is not solved until now, spoken to agents already", "date": "2026-07-06", "rating": 1}];
+  const stage = document.getElementById('stage');
+  const dotsWrap = document.getElementById('dots');
+
+  REVIEWS.forEach((r, i) => {
+    const card = document.createElement('div');
+    card.className = 'card' + (i === 0 ? ' active' : '');
+    const stars = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
+    card.innerHTML = `
+      <div class="stars">${stars}</div>
+      <div class="quote-text">${r.text.replace(/</g,'&lt;')}</div>
+      <div class="attribution">
+        <span class="badge">${r.source}</span>
+        <span class="who">${r.name} &middot; ${r.date}</span>
+      </div>`;
+    stage.appendChild(card);
+    const dot = document.createElement('div');
+    dot.className = 'dot' + (i === 0 ? ' active' : '');
+    dotsWrap.appendChild(dot);
+  });
+
+  let idx = 0;
+  const cards = stage.querySelectorAll('.card');
+  const dots = dotsWrap.querySelectorAll('.dot');
+  function next() {
+    cards[idx].classList.remove('active');
+    dots[idx].classList.remove('active');
+    idx = (idx + 1) % cards.length;
+    cards[idx].classList.add('active');
+    dots[idx].classList.add('active');
+  }
+  if (cards.length > 1) setInterval(next, 7000);
+  setTimeout(() => location.reload(), 30 * 60 * 1000);
+</script>
+</body>
+</html>
