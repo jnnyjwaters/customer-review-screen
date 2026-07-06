@@ -1,8 +1,13 @@
-name: Sync Review Wall → Pages
+name: Sync Walls → Pages
+
+# REPLACES the existing sync_and_publish.yml in jnnyjwaters/customer-review-screen.
+# Mirrors both public-safe walls from the private office-screens repo:
+#   review-wall.html     → index.html       (.../customer-review-screen/)
+#   trustpilot-wall.html → trustpilot.html  (.../customer-review-screen/trustpilot.html)
 
 on:
   schedule:
-    - cron: "5,35 * * * *"   # 5 min after the private repo's own build cycle
+    - cron: "5,35 * * * *"   # a few min after the private repo's build cycles
   workflow_dispatch:
 
 jobs:
@@ -11,11 +16,9 @@ jobs:
     timeout-minutes: 5
     permissions:
       contents: write
-
     steps:
       - uses: actions/checkout@v4
-
-      - name: Pull latest review-wall.html from the private source repo
+      - name: Pull latest public-safe walls from the private source repo
         env:
           SOURCE_REPO_TOKEN: ${{ secrets.SOURCE_REPO_TOKEN }}
         run: |
@@ -24,11 +27,15 @@ jobs:
             -H "Accept: application/vnd.github.raw" \
             "https://api.github.com/repos/jnnyjwaters/office-screens/contents/screens/review-wall.html"
           mv index.html.tmp index.html
-
+          curl -sS -f -o trustpilot.html.tmp \
+            -H "Authorization: Bearer ${SOURCE_REPO_TOKEN}" \
+            -H "Accept: application/vnd.github.raw" \
+            "https://api.github.com/repos/jnnyjwaters/office-screens/contents/screens/trustpilot-wall.html"
+          mv trustpilot.html.tmp trustpilot.html
       - name: Commit if changed
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add index.html
-          git diff --staged --quiet || git commit -m "sync: publish latest review wall $(date -u +%Y-%m-%dT%H:%M)"
+          git add index.html trustpilot.html
+          git diff --staged --quiet || git commit -m "sync: publish latest walls $(date -u +%Y-%m-%dT%H:%M)"
           git push
